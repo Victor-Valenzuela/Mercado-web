@@ -1,0 +1,59 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mercado web</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-success justify-content-center py-3">
+        <div>
+            <a class="navbar-brand carrito" data-bs-toggle="modal" data-bs-target="#exampleModal" href="#">
+                <img src="img/bolsa.png" alt="" style="width: 35px;"><span class="badge badge-light">0</span>
+            </a>
+        </div>
+    </nav>
+    {{{body}}}
+
+
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/jquery/jquery.js"></script>
+    <script>
+        let frutas = [];
+        localStorage.setItem('frutas', JSON.stringify(frutas));
+
+        $('.compra').click(function (e) {
+            $(this).toggleClass('active');
+            let frutasCompra = JSON.parse(localStorage.getItem('frutas'));
+            let exist = frutasCompra.find(fruta => fruta == this.id)
+            if (!exist) {
+                frutasCompra.push(this.id);
+            } else {
+                frutasCompra = frutasCompra.filter(fruta => fruta != this.id);
+            }
+            localStorage.setItem('frutas', JSON.stringify(frutasCompra));
+            $('.badge').html(frutasCompra.length);
+        });
+
+        $('.carrito').click(function (e) {
+            let frutasCarro = JSON.parse(localStorage.getItem('frutas'));
+            if (frutasCarro == '') {
+                $('.modal-body').html('No hay frutas en el carrito');
+            } else {
+                let html = '';
+                frutasCarro.forEach(function (fruta) {
+                    html += `<img src="img/${fruta}.png" alt="${fruta}" class="col-4">`;
+                });
+                $('.modal-body').html(html);
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>
